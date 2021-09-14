@@ -1,0 +1,41 @@
+\def\due{Monday, 27 July 2020}
+\def\zipscript{\texttt{zip -j ps1\_submission.zip featuremaps/src/featuremap.py}}
+\def\zipscriptalt{\texttt{python zip\_submission.py}}
+\def\psetnum{1 }
+
+%%% Change the following flag to toggle between questions or solutions
+\ifdefined\solutions {1} \else \def\solutions{2} \fi
+
+\input{macros}
+
+\begin{document}
+
+\pagestyle{myheadings} \markboth{}{XCS229i Problem Set \psetnum}
+
+\ifnum\solutions=1{
+{\huge\noindent XCS229i Problem Set \psetnum (Solutions)}
+} \else {
+\huge\noindent XCS229i Problem Set \psetnum
+} \fi
+
+\ruleskip
+
+{\bf Due {\due }.}
+
+\medskip
+
+\input{00-instructions/00-main}
+
+\ruleskip
+
+\begin{enumerate}[wide, labelwidth=!, labelindent=0pt]
+
+\clearpage
+\input{simple_nn/00-main}
+
+\clearpage
+\input{featuremaps/00-main}
+
+\end{enumerate}
+
+\end{document}
