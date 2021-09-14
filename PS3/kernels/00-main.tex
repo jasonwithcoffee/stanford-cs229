@@ -1,0 +1,122 @@
+\item \points{40} {\bf Constructing kernels}
+
+In class, we saw that by choosing a kernel $K(x,z) = \phi(x)^T\phi(z)$, we can
+implicitly map data to a high dimensional space, and have a learning algorithm (e.g SVM or logistic regression)
+work in that space. One way to generate kernels is to explicitly define the
+mapping $\phi$ to a higher dimensional space, and then work out the
+corresponding $K$.
+
+However in this question we are interested in direct construction of kernels.
+I.e., suppose we have a function $K(x,z)$ that we think gives an appropriate
+similarity measure for our learning problem, and we are considering plugging
+$K$ into the SVM as the kernel function. However for $K(x,z)$ to be a valid
+kernel, it must correspond to an inner product in some higher dimensional space
+resulting from some feature mapping $\phi$.  Mercer's theorem tells us that
+$K(x,z)$ is a (Mercer) kernel if and only if for any finite set $\{x^{(1)},
+\ldots, x^{(\nexp)}\}$, the square matrix $K \in \Re^{\nexp \times \nexp}$ whose entries
+are given by $K_{ij} = K(x^{(i)},x^{(j)})$ is symmetric and positive
+semidefinite. You can find more details about Mercer's theorem in the notes,
+though the description above is sufficient for this problem.
+
+Now here comes the question: Let $K_1$, $K_2$ be kernels over $\Re^{\di} \times
+\Re^{\di}$, let $a \in \Re^+$ be a positive real number, let $f : \Re^{\di} \mapsto
+\Re$ be a real-valued function, let $\phi: \Re^{\di} \rightarrow \Re^\nf$ be a
+function mapping from $\Re^{\di}$ to $\Re^\nf$, let $K_3$ be a kernel over $\Re^\nf
+\times \Re^\nf$, and let $p(x)$ a polynomial over $x$ with \emph{positive}
+coefficients.
+
+For each of the functions $K$ below, state whether it is necessarily a
+kernel.  If you think it is, prove it; if you think it isn't, give a
+counter-example.
+
+[\textbf{Hint:} For part (e), the answer is that $K$ \emph{is} indeed
+a kernel. You still have to prove it, though.  (This one may be harder than the
+rest.)  This result may also be useful for another part of the problem.]
+
+\begin{enumerate}
+
+\item \subquestionpointswritten{5} $K(x,z) = K_1(x,z) + K_2(x,z)$\\[10pt]
+Yes. $K_1$ and $K_2$ are valid symmetric and positive semidefinite kernels. As a result, the sum of $K_1$ and $K_2$ will yield a valid symmetric and positive semidefinite kernel.
+\begin{flalign*}
+  K(x,z) \\
+  &= z^TKz  \\
+  &= z^TK_1z + z^TK_2z \\
+  &\geq 0\\
+	\\[30pt]
+\end{flalign*}
+
+\item \subquestionpointswritten{5} $K(x,z) = K_1(x,z) - K_2(x,z)$\\[10pt]
+No. $K_1$ and $K_2$ are valid symmetric and positive semidefinite kernels. The resultant kernel $K$ from the difference of $K_1$ and $K_2$ is not a valid kernel, because the difference may invalidate the positive and semidefinite requirement. Counter example:As seen below, $z^TK_2z > z^TK_1z$ will yield negative. For example, if $K_2 = 1.1K_1$, then $K(x,z) =z^TK_1z - z^TK_2z = -0.1z^TK_1z <0$; hence not meeting the positive semidefinite requirement of a Mercer kernel.
+
+\begin{flalign*}
+  K(x,z) \\
+  &= z^TKz  \\
+  &= z^TK_1z - z^TK_2z \\
+  &\geq 0\\
+  z^TK_1z &\geq z^TK_2z
+	\\[30pt]
+\end{flalign*}
+
+\item \subquestionpointswritten{5} $K(x,z) = a K_1(x,z)$\\[10pt]
+Yes. $a$ is a positive real number. $K_1$ is a valid symmetric and positive semidefinite kernel. Their product will yield a valid symmetric and positive semidefinite kernel.
+\begin{flalign*}
+  K(x,z) \\
+  &= z^TKz  \\
+  &= az^TK_1z \\
+  &\geq 0\\
+	\\[30pt]
+\end{flalign*}
+\item \subquestionpointswritten{5} $K(x,z) = -a K_1(x,z)$\\[10pt]
+No. $a$ is a positive real number. $K_1$ is a valid symmetric and positive semidefinite kernel. Having a negative in front of a will yield negative; hence not meeting the positive semidefinite requirement of a Mercer kernel. Counter example: $a=1$.
+\begin{flalign*}
+  K(x,z) \\
+  &= z^TKz  \\
+  &= -az^TK_1z \\
+  &< 0\\
+	\\[30pt]
+\end{flalign*}
+\item \subquestionpointswritten{5} $K(x,z) = K_1(x,z)K_2(x,z)$\\[10pt]
+Yes, $K_1(x,z)K_2(x,z)$ is a valid symmetric and positive semidefinite kernel. The Gram matrix is given by $K=K_1 \circ K_2$, where $\circ$ is the Hadamard product.
+
+\begin{flalign*}
+  K &= \sum_{i} \sum_{j} (\lambda_i u_i u_i^T) \circ (\mu_j v_j v_j^T) \\
+  &= \sum_{i} \sum_{j} \lambda_i \mu_j (u_i \circ v_j) (u_i \circ v_j)^T \\
+  &= \sum_{k} \gamma_k w_k w_k^T
+	\\[10pt]
+\end{flalign*}
+Thus,
+\begin{flalign*}
+  K(x,z) &= z^TKz \\
+  &= \sum_{k} \gamma_k z^T w_k w_k^T z \\
+  &= \sum_{k} \gamma_k (w_k^T z)^2 \\
+  &\geq 0
+	\\[10pt]
+\end{flalign*}
+
+\item \subquestionpointswritten{5} $K(x,z) = f(x)f(z)$\\[10pt]
+Yes, $f(x)f(z)$ is a valid symmetric and positive semidefinite kernel.
+\begin{flalign*}
+  K(x,z) &= z^TKz \\
+  &= \sum_{k}  z^T f(x^{(k)})f(x^{(k)}) z \\
+  &= \sum_{k} (f(x^{(k)} z)^2 \\
+  &\geq 0
+	\\[10pt]
+\end{flalign*}
+
+\item \subquestionpointswritten{5} $K(x,z) = K_3(\phi(x),\phi(z))$\\[10pt]
+Yes, $K_3(\phi(x),\phi(z))$ is a valid symmetric and positive semidefinite kernel. The problem states that $K_3$ is a valid kernel. $K$ will be a valid kernel as long as the mapping $\phi$ is in the same $\Re$ of the kernel $K_3$.
+\begin{flalign*}
+  K(x,z) &= z^TKz \\
+  &= \sum_{k}  z^T K_3(\phi(x^{(k)}),\phi(x^{(k)})) z \\
+  &\geq 0
+	\\[10pt]
+\end{flalign*}
+
+\item \subquestionpointswritten{5} $K(x,z) = p(K_1(x,z))$\\[10pt]
+Yes, $p(K_1(x,z))$ is a valid symmetric and positive semidefinite kernel.$p(x)$ a polynomial over $x$ with \emph{positive} coefficients. From the previous solutions, we see that (a) sum of valid kernels yields a valid kernel, (c) multiplying a valid kernel with a positive coeficient yields a valid kernel, (e) multiplying valid kernels together yields a valid kernel. Thus, $K(x,z) = p(K_1(x,z))$ is a valid kernel.
+
+\end{enumerate}
+
+\ifnum\solutions=1 {
+  \input{kernels/00-main-sol}
+} \fi

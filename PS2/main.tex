@@ -1,0 +1,39 @@
+\def\due{Monday, 10 August 2020}
+\def\zipscript{\texttt{zip -j ps2\_submission.zip linearclass/src/gda.py linearclass/src/logreg.py poisson/src/poisson.py}}
+\def\zipscriptalt{\texttt{python zip\_submission.py}}
+\def\psetnum{2 }
+
+%%% Change the following flag to toggle between questions or solutions
+\ifdefined\solutions {1} \else \def\solutions{2} \fi
+
+\input{macros}
+
+\begin{document}
+
+\pagestyle{myheadings} \markboth{}{XCS229i Problem Set \psetnum}
+
+\ifnum\solutions=1{
+{\huge\noindent XCS229i Problem Set \psetnum (Solutions)}
+} \else {
+\huge\noindent XCS229i Problem Set \psetnum
+} \fi
+
+\ruleskip
+
+{\bf Due {\due }.}
+
+\medskip
+I formed study session with Ketki Ambekar.
+\input{00-instructions/00-main}
+
+\begin{enumerate}[wide, labelwidth=!, labelindent=0pt]
+
+\clearpage
+\input{linearclass/00-main}
+
+\clearpage
+\input{poisson/00-main}
+
+\end{enumerate}
+
+\end{document}

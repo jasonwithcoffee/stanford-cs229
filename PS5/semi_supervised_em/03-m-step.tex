@@ -1,0 +1,70 @@
+\item\subquestionpointswritten{10} \textbf{Semi-supervised M-Step.}
+Clearly state the parameters that need to be re-estimated in the M-step. Derive the M-step to re-estimate all the stated parameters.  Specifically,
+derive closed form expressions for the parameter update rules for $\mu^{(t+1)}$, $\Sigma^{(t+1)}$ and $\phi^{(t+1)}$ based on the semi-supervised objective.\\
+
+{\bf BEGIN PROOF HERE}\\
+\allowdisplaybreaks
+List the parameters which need to be re-estimated in the M-step:\\\\\\
+
+In order to simplify derivation, it is useful to denote $$w_j^{(i)} = Q^{(t)}_i(\zsi=j),$$ and $$\tilde{w}_j^{(i)} = \begin{cases} \alpha & \tilde{z}^{(i)} = j \\ 0 & \text{ otherwise.} \end{cases}$$
+
+We further denote $S = \Sigma^{-1}$, and note that because of the chain rule, $\nabla_S\ell = 0 \Rightarrow \nabla_\Sigma \ell = 0$. So we choose to rewrite the M-step in terms of $S$ and maximize it w.r.t $S$, and re-express the resulting solution back in terms of $\Sigma$.
+
+Based on this, the M-step becomes (The following simplification is not required for full credit, but will help later derivations and may be used by the teaching staff as justification for awarding partial credit):
+\begin{flalign*}
+\phi^{(t+1)}, \mu^{(t+1)}, S^{(t+1)} &=  \arg\max_{\phi,\mu,S} \left(\sum_{i=1}^\nexp \sum_{j=1}^k Q_i^{(t)}(\zsi) \log \frac{p(\xsi,\zsi;\phi,\mu,S)}{Q_i^{(t)}(\zsi)} + \alpha\sum_{i=1}^{\tilde{\nexp}} \log p(\tilde{x}^{(i)}, \tilde{z}^{(i)}; \phi, \mu, S)\right)\\\\
+&=\\[10em]
+\end{flalign*}
+
+Now, calculate the update steps by maximizing the expression within the argmax for each parameter (We will do the first for you).\\
+
+${\mathbf \phi_j}$: We construct the Lagrangian including the constraint that $\sum_{j=1}^k \phi_j = 1$, and absorbing all irrelevant terms into constant $C$:
+\begin{align*}
+\mathcal{L}(\phi, \beta) &= C + \sum_{i=1}^\nexp\sum_{j=1}^k w^{(i)}_j \log \phi_j + \sum_{i=1}^{\tilde{\nexp}}\sum_{j=1}^k \tilde{w}^{(i)}_j \log \phi_j + \beta\left(\sum_{j=1}^k \phi_j - 1\right) \\
+\nabla_{\phi_j}\mathcal{L}(\phi, \beta) &=  \sum_{i=1}^\nexp w^{(i)}_j\frac{1}{\phi_j} + \sum_{i=1}^{\tilde{\nexp}} \tilde{w}^{(i)}_j\frac{1}{\phi_j} + \beta = 0 \\
+&\Rightarrow \phi_j = \frac{\sum_{i=1}^\nexp w^{(i)}_j + \sum_{i=1}^{\tilde{\nexp}} \tilde{w}^{(i)}_j}{-\beta} \\
+\nabla_\beta\mathcal{L}(\phi,\beta) &= \sum_{j=1}^k \phi_j -1 = 0 \\
+&\Rightarrow \sum_{j=1}^k \frac{\sum_{i=1}^\nexp w^{(i)}_j + \sum_{i=1}^{\tilde{\nexp}} \tilde{w}^{(i)}_j}{-\beta} = 1 \\
+&\Rightarrow -\beta = \sum_{j=1}^k \left(\sum_{i=1}^\nexp w^{(i)}_j + \sum_{i=1}^{\tilde{\nexp}} \tilde{w}^{(i)}_j\right)  \\
+\Rightarrow \phi_j^{(t+1)} &= \frac{ \sum_{i=1}^\nexp w_j^{(i)} + \sum_{i=1}^{\tilde{\nexp}}\tilde{w}_j^{(i)}} { \sum_{j=1}^k \left(\sum_{i=1}^\nexp w^{(i)}_j + \sum_{i=1}^{\tilde{\nexp}} \tilde{w}^{(i)}_j\right) } \\
+&= \frac{ \sum_{i=1}^\nexp w_j^{(i)} + \sum_{i=1}^{\tilde{\nexp}}\tilde{w}_j^{(i)}} { \nexp + \alpha \tilde{\nexp}}
+\end{align*}
+
+${\mathbf \mu_j}$: Next, derive the update for $\mu_j$.  Do this by maximizing the expression with the argmax above with respect to $\mu_j$.\\
+
+First, calculate the gradient with respect to $\mu_j$:
+
+\begin{flalign*}
+\nabla_{\mu_j} &=  & & & & & & &\\[15em]
+\end{flalign*}
+
+Next, set the gradient to zero and solve for $\mu_j$:
+
+\begin{flalign*}
+0 &=  & & & & & & &\\[15em]
+\end{flalign*}
+
+${\mathbf \Sigma_j}$: Finally, derive the update for $\Sigma_j$ via $S_j$.  Again, do this by maximizing the expression with the argmax above with respect to $S_j$.\\.
+
+
+First, calculate the gradient with respect to $S_j$:
+
+\begin{flalign*}
+\nabla_{S_j} &=  & & & & & & &\\[15em]
+\end{flalign*}
+
+Next, set the gradient to zero, solve for $S_j$, and use the result to solve for $\Sigma_j$:
+
+\begin{flalign*}
+0 &=  & & & & & & &\\[15em]
+\end{flalign*}
+
+
+This results in the final set of update expressions:
+\begin{flalign*}
+  \phi_j & := & & & & & & &\\ \\
+  \mu_j & := \\ \\
+  \Sigma_j & := \\ \\
+\end{flalign*}
+
+{\bf END PROOF}\\

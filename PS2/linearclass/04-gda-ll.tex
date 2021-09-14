@@ -1,0 +1,162 @@
+\item \subquestionpointswritten{5} Given the dataset, we claim that the maximum likelihood estimates of the parameters are given by
+\begin{eqnarray*}
+    \phi &=& \frac{1}{\nexp} \sum_{i=1}^\nexp 1\{y^{(i)} = 1\} \\
+    \mu_{0} &=& \frac{\sum_{i=1}^\nexp 1\{y^{(i)} = {0}\} x^{(i)}}{\sum_{i=1}^\nexp 1\{y^{(i)} = {0}\}} \\
+    \mu_1 &=& \frac{\sum_{i=1}^\nexp 1\{y^{(i)} = 1\} x^{(i)}}{\sum_{i=1}^\nexp 1\{y^{(i)} = 1\}} \\
+    \Sigma &=& \frac{1}{\nexp} \sum_{i=1}^\nexp (x^{(i)} - \mu_{y^{(i)}}) (x^{(i)} - \mu_{y^{(i)}})^T
+\end{eqnarray*}
+The log-likelihood of the data is
+\begin{eqnarray*}
+    \ell(\phi, \mu_{0}, \mu_1, \Sigma) &=& \log \prod_{i=1}^\nexp p(x^{(i)} , y^{(i)}; \phi, \mu_{0}, \mu_1, \Sigma) \\
+    &=& \log \prod_{i=1}^\nexp p(x^{(i)} | y^{(i)}; \mu_{0}, \mu_1, \Sigma) p(y^{(i)}; \phi).
+\end{eqnarray*}
+By maximizing $\ell$ with respect to the four parameters, prove that the maximum likelihood estimates of $\phi$, $\mu_{0}, \mu_1$, and $\Sigma$ are indeed as given in the formulas above.  (You may assume that there is at least one positive and one negative example, so that the denominators in the definitions of $\mu_{0}$ and $\mu_1$ above are non-zero.)\\\\
+
+{\bf BEGIN PROOF HERE}\\
+
+First, derive the expression for the log-likelihood of the training data:
+\begin{flalign*}
+  \ell(\phi, \mu_{0}, \mu_1, \Sigma) \\
+  &= \log \prod_{i=1}^\nexp p(x^{(i)} | y^{(i)}; \mu_{0}, \mu_1, \Sigma) p(y^{(i)}; \phi)\\
+  &= \sum_{i=1}^{\nexp} \log p(x^{(i)} | y^{(i)}; \mu_{0}, \mu_1, \Sigma) +
+  \sum_{i=1}^{n} \log p(y^{(i)}; \phi)\\\\
+  &= \sum_{i=1}^{\nexp} \log \left( \frac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}}
+    \exp\left(-\frac{1}{2}(x^{(i)}-\mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)}-\mu_{y^{(i)}})\right)
+    \right)
+    + \sum_{i=1}^{\nexp} \log \left( \phi^{y^{(i)}}(1-\phi)^{(1-{y^{(i)}})}
+    \right) \\
+  &= \sum_{i=1}^{\nexp} -\frac{n}{2} \log(2\pi) - \frac{1}{2}\log(|\Sigma|)
+    -\frac{1}{2}(x^{(i)}-\mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)}-\mu_{y^{(i)}})
+    + y^{(i)}\log(\phi) +(1-y^{(i)})\log(1-\phi)
+   & & & & & & &\\[50pt]
+\end{flalign*}
+
+Now, the likelihood is maximized by setting the derivative (or gradient) with respect to each of the parameters to zero.\\
+
+\textbf{For $\mathbf{\phi}$:}
+
+\begin{flalign*}
+  \frac{\partial \ell}{\partial \phi} \\
+  &= \frac{\partial}{\partial \phi} \sum_{i=1}^{\nexp} y^{(i)}\log(\phi) +(1-y^{(i)})\log(1-\phi) \\
+  &= \sum_{i=1}^{\nexp} \frac{y^{(i)}}{\phi} - \frac{(1-y^{(i)})}{(1-\phi)} \\\\
+& &\\[50pt]
+\end{flalign*}
+
+Setting this equal to zero and solving for $\phi$ gives the maximum
+likelihood estimate.\\
+\begin{flalign*}
+  0 &= \sum_{i=1}^{\nexp} \frac{1\{y^{(i)} = 1\}}{\phi} - \frac{(1-1\{y^{(i)} = 1\})}{(1-\phi)} \\
+  &= \frac{\sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\}}{\phi} - \frac{(n- \sum_{i=1}^{\nexp}1\{y^{(i)} = 1\})}{(1-\phi)} \\
+  &= \sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} - \phi\sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} -n \phi + \phi \sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} \\
+  &= \sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} -n \phi \\
+  \phi &= \frac{1}{n} \sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} & &\\
+\end{flalign*}
+\textbf{For $\mathbf{\mu_0}$:}
+
+{\bf Hint:}  Remember that $\Sigma$ (and thus $\Sigma^{-1}$) is symmetric.
+
+\begin{flalign*}
+  \nabla_{\mu_{0}}\ell \\
+  &= \nabla_{\mu_{0}} \sum_{i=1}^{\nexp} -\frac{1}{2}(x^{(i)}-\mu_0)^T \Sigma^{-1} (x^{(i)}-\mu_0) \\
+  &= -\frac{1}{2}\nabla_{\mu_{0}}\sum_{i=1}^{\nexp}\left( 
+    x^{(i)T} \Sigma^{-1}x^{(i)} - x^{(i)T} \Sigma^{-1}\mu_{0}
+    -\mu_{0}^T \Sigma^{-1}x^{(i)} +\mu_{0}^T \Sigma^{-1}\mu_{0}
+    \right)\\
+  &= -\frac{1}{2}\sum_{i=1}^{\nexp} \nabla_{\mu_{0}} \left( 
+    -2 x^{(i)T} \Sigma^{-1}\mu_{0} +\Sigma^{-1}\mu_{0}^2
+    \right)\\
+  &= -\frac{1}{2}\sum_{i=1}^{\nexp} \left( 
+    -2 x^{(i)T} \Sigma^{-1} +2 \Sigma^{-1}\mu_{0}
+    \right)\\
+  &= \sum_{i=1}^{\nexp} \left( 
+    \Sigma^{-1} x^{(i)} - \Sigma^{-1}\mu_{0}
+    \right)\\
+   & & & &\\[50pt]
+\end{flalign*}
+
+Setting this gradient to zero gives the maximum likelihood estimate
+for $\mu_{0}$.\\
+\begin{flalign*}
+  0 &= \sum_{i=1}^{\nexp} \left( 
+    \Sigma^{-1} x^{(i)} - \Sigma^{-1}\mu_{0}
+    \right)\\
+  &= \sum_{i=1}^{\nexp} 1\{y^{(i)} = 0\} \Sigma^{-1} x^{(i)}
+    -\sum_{i=1}^{\nexp} 1\{y^{(i)} = 0\} \Sigma^{-1}\mu_{0} \\
+  \mu_{0}&= \frac{\sum_{i=1}^{\nexp} 1\{y^{(i)} = 0\} x^{(i)}}
+    {\sum_{i=1}^{\nexp} 1\{y^{(i)} = 0\}}
+  & &\\[50pt]
+\end{flalign*}
+
+
+\textbf{For $\mathbf{\mu_1}$:}
+
+{\bf Hint:}  Remember that $\Sigma$ (and thus $\Sigma^{-1}$) is symmetric.
+
+\begin{flalign*}
+  \nabla_{\mu_{1}}\ell \\
+  &= \nabla_{\mu_{1}} \sum_{i=1}^{\nexp} -\frac{1}{2}(x^{(i)}-\mu_1)^T \Sigma^{-1} (x^{(i)}-\mu_1) \\
+  &= -\frac{1}{2}\nabla_{\mu_{1}}\sum_{i=1}^{\nexp}\left( 
+    x^{(i)T} \Sigma^{-1}x^{(i)} - x^{(i)T} \Sigma^{-1}\mu_{1}
+    -\mu_{1}^T \Sigma^{-1}x^{(i)} +\mu_{1}^T \Sigma^{-1}\mu_{1}
+    \right)\\
+  &= -\frac{1}{2}\sum_{i=1}^{\nexp} \nabla_{\mu_{1}} \left( 
+    -2 x^{(i)T} \Sigma^{-1}\mu_{1} +\Sigma^{-1}\mu_{1}^2
+    \right)\\
+  &= -\frac{1}{2}\sum_{i=1}^{\nexp} \left( 
+    -2 x^{(i)T} \Sigma^{-1} +2 \Sigma^{-1}\mu_{1}
+    \right)\\
+  &= \sum_{i=1}^{\nexp} \left( 
+    \Sigma^{-1} x^{(i)} - \Sigma^{-1}\mu_{1}
+    \right)\\
+  & & & & & & & &\\[50pt]
+\end{flalign*}
+
+Setting this gradient to zero gives the maximum likelihood estimate
+for $\mu_{1}$.\\
+
+\begin{flalign*}
+  0 &= \sum_{i=1}^{\nexp} \left( 
+    \Sigma^{-1} x^{(i)} - \Sigma^{-1}\mu_{1}
+    \right)\\
+  &= \sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} \Sigma^{-1} x^{(i)}
+    -\sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} \Sigma^{-1}\mu_{1} \\
+  \mu_{1}&= \frac{\sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\} x^{(i)}}
+    {\sum_{i=1}^{\nexp} 1\{y^{(i)} = 1\}}
+  & &\\[50pt]
+\end{flalign*}
+
+For $\Sigma$, we find the gradient with respect to $S = \Sigma^{-1}$ rather than $\Sigma$ just to simplify the derivation (note that $|S| = \frac{1}{|\Sigma|}$).
+You should convince yourself that the maximum likelihood estimate $S_\nexp$ found in this way would correspond to the actual maximum likelihood estimate $\Sigma_\nexp$ as $S_\nexp^{-1} = \Sigma_\nexp$.
+
+{\bf Hint:}  You may need the following identities: 
+\begin{equation*}
+\nabla_S |S| = |S| (S^{-1})^T
+\end{equation*}
+\begin{equation*}
+  \nabla_S b_i^T S b_i = \nabla_S tr \left( b_i^T S b_i \right) =
+  \nabla_S tr \left( S b_i b_i^T \right) = b_i b_i^T
+\end{equation*}
+
+\begin{flalign*}
+  \nabla_S\ell \\
+  &= \nabla_S \sum_{i=1}^{\nexp} - \frac{1}{2}\log(|\Sigma|)
+    -\frac{1}{2}(x^{(i)}-\mu_{y^{(i)}})^T \Sigma^{-1} (x^{(i)}-\mu_{y^{(i)}}) \\
+  &= \nabla_S \sum_{i=1}^{\nexp} \frac{1}{2}\log(|S|)
+    -\frac{1}{2}(x^{(i)}-\mu_{y^{(i)}})^T S (x^{(i)}-\mu_{y^{(i)}}) \\
+  &= \sum_{i=1}^{\nexp} \nabla_S\frac{1}{2}\log(|S|)
+    - \nabla_S \frac{1}{2}(x^{(i)}-\mu_{y^{(i)}})^T S (x^{(i)}-\mu_{y^{(i)}}) \\
+  &= \sum_{i=1}^{\nexp} \nabla_S\frac{1}{2}\log(|S|)
+    - \nabla_S \frac{1}{2} S (x^{(i)}-\mu_{y^{(i)}})(x^{(i)}-\mu_{y^{(i)}})^T \\
+  &= \sum_{i=1}^{\nexp} \frac{1}{2|S|} - \frac{1}{2}(x^{(i)}-\mu_{y^{(i)}})(x^{(i)}-\mu_{y^{(i)}})^T & & & &\\[50pt]
+\end{flalign*}
+
+Next, substitute $\Sigma = S^{-1}$.  Setting this gradient to zero gives the required maximum likelihood estimate for $\Sigma$.\\
+
+\begin{flalign*}
+  0 &= \sum_{i=1}^{\nexp} \frac{1}{2}\Sigma - \frac{1}{2}(x^{(i)}-\mu_{y^{(i)}})(x^{(i)}-\mu_{y^{(i)}})^T \\
+  &= n\Sigma - \sum_{i=1}^{\nexp}(x^{(i)}-\mu_{y^{(i)}})(x^{(i)}-\mu_{y^{(i)}})^T \\
+  \Sigma &= \frac{1}{n}\sum_{i=1}^{\nexp}(x^{(i)}-\mu_{y^{(i)}})(x^{(i)}-\mu_{y^{(i)}})^T
+  & &\\[50pt]
+\end{flalign*}
+
+{\bf END PROOF}\\

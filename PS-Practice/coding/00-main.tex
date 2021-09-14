@@ -1,0 +1,34 @@
+\item \subquestionpointscoding{2} {\bf Conda Tutorial}
+
+Please complete the tutorial in \url{coding/CondaTutorial.pdf}. When you are finished, activate your new CS229 conda environment and create a python file called \textbf{practice\_submission.py} that contains the following code. You can copy the code from here: \url{coding/practice\_submission.py}\\
+\\
+
+\begin{lstlisting}[language=Python, numbers=none, caption=\textbf{practice\_submission.py}]
+import matplotlib
+import numpy
+import scipy
+import pandas as pd
+
+class PracticeSubmission(object): 
+    def __init__(self, response=None):
+        """
+        Args:
+            response: A string
+        """
+        self.response = response
+    
+    def returnResponse(self):
+        self.response = "I successfully completed the conda tutorial!"
+        return self.response
+
+def runPracticeSubmission(response):
+    practice = PracticeSubmission()
+    response = practice.returnResponse()
+    return response
+
+def main(response):
+    response = runPracticeSubmission(response)
+
+if __name__ == '__main__':
+    main("Try this out!")
+\end{lstlisting}

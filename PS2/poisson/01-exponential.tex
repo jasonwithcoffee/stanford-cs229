@@ -1,0 +1,25 @@
+\item \subquestionpointswritten{2} Consider the Poisson distribution parameterized by $\lambda$:
+%
+\begin{equation*}
+  p(y; \lambda) = \frac{e^{-\lambda}\lambda^y}{y!}.
+\end{equation*}
+%
+(Here $y$ has positive integer values and $y!$ is the factorial of $y$. ) Show that the Poisson distribution is in the exponential family, and clearly state the values for $b(y)$, $\eta$, $T(y)$, and $a(\eta)$.\\
+
+{\bf BEGIN PROOF HERE}\\[20pt]
+
+\begin{flalign*}
+  p(y; \lambda) \\
+  &= \frac{e^{-\lambda}\lambda^y}{y!}  \\
+  &= \exp \left(-\lambda + y\log(\lambda) - \log(y!) \right) \\
+  &= \frac{\exp \left(y\log(\lambda) - \lambda \right)}
+  	{\exp \left( \log(y!) \right)} \\
+  &= \frac{1}{y!} \exp \left(\log(\lambda)y - \lambda \right)\\\\\\
+  b(y) &= \frac{1}{y!} \\
+  \eta &=  \log(\lambda) \\
+  T(y) &= y \\
+  a(\eta) &= \lambda = e^\eta
+	\\[50pt]
+\end{flalign*}
+
+{\bf END PROOF}\\
